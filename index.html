@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>你处在人生发展的第几层？</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 欢迎页 -->
+  <div id="screen-welcome" class="screen active">
+    <div class="welcome-container">
+      <div class="welcome-badge">社会资源评估</div>
+      <h1 class="welcome-title">你现在处在<br>人生发展的第几层？</h1>
+      <p class="welcome-desc">从财务、职业、认知、人脉、生活掌控、成长潜力六个维度，帮你看清自己当前的真实位置，以及下一步怎么走。</p>
+      <div class="welcome-meta">
+        <span class="meta-item">📋 30道题</span>
+        <span class="meta-divider">·</span>
+        <span class="meta-item">⏱ 约3分钟</span>
+        <span class="meta-divider">·</span>
+        <span class="meta-item">🔒 本地运行不上传</span>
+      </div>
+      <div class="welcome-levels">
+        <div class="level-preview">
+          <span class="lp-dot lv1"></span><span>生存压力层</span>
+        </div>
+        <div class="level-preview">
+          <span class="lp-dot lv2"></span><span>稳定打工层</span>
+        </div>
+        <div class="level-preview">
+          <span class="lp-dot lv3"></span><span>技能成长层</span>
+        </div>
+        <div class="level-preview">
+          <span class="lp-dot lv4"></span><span>资源交换层</span>
+        </div>
+        <div class="level-preview">
+          <span class="lp-dot lv5"></span><span>系统掌控层</span>
+        </div>
+        <div class="level-preview">
+          <span class="lp-dot lv6"></span><span>规则参与层</span>
+        </div>
+      </div>
+      <button class="btn-start" onclick="startTest()">开始测试</button>
+      <p class="welcome-note">测试结果仅供参考，没有好坏之分</p>
+    </div>
+  </div>
+
+  <!-- 答题页 -->
+  <div id="screen-question" class="screen">
+    <div class="q-header">
+      <div class="q-progress-bar">
+        <div class="q-progress-fill" id="progressFill"></div>
+      </div>
+      <div class="q-progress-text">
+        <span id="progressDim" class="dim-badge"></span>
+        <span id="progressCount" class="progress-count"></span>
+      </div>
+    </div>
+    <div class="q-body">
+      <div class="q-card" id="questionCard">
+        <p class="q-text" id="questionText"></p>
+        <div class="q-options" id="optionsContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 过渡动画页 -->
+  <div id="screen-loading" class="screen">
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">正在分析你的结果…</p>
+    </div>
+  </div>
+
+  <!-- 结果页 -->
+  <div id="screen-result" class="screen">
+    <div class="result-container">
+
+      <!-- 顶部分数卡 -->
+      <div class="result-hero">
+        <div class="result-score-wrap">
+          <div class="result-score" id="resultScore"></div>
+          <div class="result-score-label">总分 / 120</div>
+        </div>
+        <div class="result-title-wrap">
+          <div class="result-level-tag" id="resultLevelTag"></div>
+          <h2 class="result-level-name" id="resultLevelName"></h2>
+          <p class="result-tagline" id="resultTagline"></p>
+        </div>
+      </div>
+
+      <!-- 雷达图 -->
+      <div class="result-section">
+        <h3 class="section-title">六维评分</h3>
+        <div class="radar-wrap">
+          <canvas id="radarChart" width="300" height="300"></canvas>
+        </div>
+        <div class="dim-scores" id="dimScores"></div>
+      </div>
+
+      <!-- 详细分析 -->
+      <div class="result-section">
+        <h3 class="section-title">详细分析</h3>
+        <div class="analysis-card">
+          <div class="analysis-block">
+            <div class="analysis-label">📍 当前状态</div>
+            <p id="analysisStatus"></p>
+          </div>
+          <div class="analysis-block">
+            <div class="analysis-label">✅ 主要优势</div>
+            <p id="analysisStrength"></p>
+          </div>
+          <div class="analysis-block">
+            <div class="analysis-label">⚠️ 最大风险</div>
+            <p id="analysisRisk"></p>
+          </div>
+          <div class="analysis-block">
+            <div class="analysis-label">🚀 下一步建议</div>
+            <div id="analysisNext" class="next-steps"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分享卡片 -->
+      <div class="result-section">
+        <h3 class="section-title">分享结果</h3>
+        <div class="share-card" id="shareCard">
+          <div class="share-card-header">
+            <span class="share-badge">人生发展层级测试</span>
+          </div>
+          <div class="share-card-emoji" id="shareEmoji"></div>
+          <div class="share-card-level" id="shareLevelName"></div>
+          <div class="share-card-score" id="shareScore"></div>
+          <div class="share-card-quote" id="shareQuote"></div>
+          <div class="share-card-dims" id="shareCardDims"></div>
+          <div class="share-card-footer">你的结果是什么层？</div>
+        </div>
+        <p class="share-hint">截图保存 · 分享到朋友圈 / 小红书</p>
+      </div>
+
+      <button class="btn-restart" onclick="restartTest()">重新测试</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
