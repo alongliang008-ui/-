@@ -1,163 +1,256 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>你处在人生发展的第几层？</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>你当前处在人生发展的哪个层级？</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- 欢迎页 -->
+  <!-- ═══════════════════════════════════════════
+       SCREEN: WELCOME
+  ═══════════════════════════════════════════ -->
   <div id="screen-welcome" class="screen active">
-    <div class="welcome-container">
-      <div class="welcome-badge">社会资源评估</div>
-      <h1 class="welcome-title">你现在处在<br>人生发展的第几层？</h1>
-      <p class="welcome-desc">从财务、职业、认知、人脉、生活掌控、成长潜力六个维度，帮你看清自己当前的真实位置，以及下一步怎么走。</p>
-      <div class="welcome-meta">
-        <span class="meta-item">📋 30道题</span>
-        <span class="meta-divider">·</span>
-        <span class="meta-item">⏱ 约3分钟</span>
-        <span class="meta-divider">·</span>
-        <span class="meta-item">🔒 本地运行不上传</span>
+    <div class="screen-inner">
+      <div class="welcome-hero">
+        <div class="welcome-badge">六维评估 · 30题</div>
+        <h1 class="welcome-title">你当前处在人生发展的哪个层级？</h1>
+        <p class="welcome-sub">不是评判你，而是看清你现在拥有多少人生主动权</p>
       </div>
-      <div class="welcome-levels">
-        <div class="level-preview">
-          <span class="lp-dot lv1"></span><span>生存压力层</span>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <span class="feature-icon">⚖️</span>
+          <div>
+            <div class="feature-title">六维加权评分</div>
+            <div class="feature-desc">财务、职业、认知、人脉、生活掌控、成长潜力</div>
+          </div>
         </div>
-        <div class="level-preview">
-          <span class="lp-dot lv2"></span><span>稳定打工层</span>
+        <div class="feature-item">
+          <span class="feature-icon">🔍</span>
+          <div>
+            <div class="feature-title">组合诊断</div>
+            <div class="feature-desc">识别你独特的维度组合模式，找到真实瓶颈</div>
+          </div>
         </div>
-        <div class="level-preview">
-          <span class="lp-dot lv3"></span><span>技能成长层</span>
-        </div>
-        <div class="level-preview">
-          <span class="lp-dot lv4"></span><span>资源交换层</span>
-        </div>
-        <div class="level-preview">
-          <span class="lp-dot lv5"></span><span>系统掌控层</span>
-        </div>
-        <div class="level-preview">
-          <span class="lp-dot lv6"></span><span>规则参与层</span>
+        <div class="feature-item">
+          <span class="feature-icon">🗺️</span>
+          <div>
+            <div class="feature-title">个性化建议</div>
+            <div class="feature-desc">7天、30天、12个月分阶段行动方案</div>
+          </div>
         </div>
       </div>
-      <button class="btn-start" onclick="startTest()">开始测试</button>
-      <button class="btn-explore" onclick="openLevelsDrawer()">查看各层级详细介绍 ↓</button>
-      <p class="welcome-note">测试结果仅供参考，没有好坏之分</p>
+
+      <div class="welcome-meta">30题 · 约8分钟 · 结果可截图分享</div>
+
+      <button class="btn-primary" id="btn-start">开始测评</button>
+
+      <button class="btn-link" id="btn-levels-open">查看各层级介绍 →</button>
     </div>
   </div>
 
-  <!-- 答题页 -->
+  <!-- ═══════════════════════════════════════════
+       SCREEN: QUESTION
+  ═══════════════════════════════════════════ -->
   <div id="screen-question" class="screen">
-    <div class="q-header">
-      <div class="q-progress-bar">
-        <div class="q-progress-fill" id="progressFill"></div>
+    <div class="screen-inner">
+      <div class="q-header">
+        <div class="q-progress-bar">
+          <div class="q-progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="q-meta">
+          <span class="q-dim-badge" id="q-dim-badge"></span>
+          <span class="q-counter" id="q-counter"></span>
+        </div>
       </div>
-      <div class="q-progress-text">
-        <span id="progressDim" class="dim-badge"></span>
-        <span id="progressCount" class="progress-count"></span>
+
+      <div class="q-body">
+        <p class="q-text" id="q-text"></p>
+        <div class="q-options" id="q-options"></div>
       </div>
-    </div>
-    <div class="q-body">
-      <div class="q-card" id="questionCard">
-        <p class="q-text" id="questionText"></p>
-        <div class="q-options" id="optionsContainer"></div>
+
+      <div class="q-footer">
+        <button class="btn-back" id="btn-back">← 上一题</button>
       </div>
     </div>
   </div>
 
-  <!-- 过渡动画页 -->
+  <!-- ═══════════════════════════════════════════
+       SCREEN: LOADING
+  ═══════════════════════════════════════════ -->
   <div id="screen-loading" class="screen">
-    <div class="loading-container">
+    <div class="loading-inner">
       <div class="loading-spinner"></div>
-      <p class="loading-text">正在分析你的结果…</p>
+      <p class="loading-text">正在分析你的资源结构…</p>
+      <p class="loading-sub">整合六个维度数据</p>
     </div>
   </div>
 
-  <!-- 结果页 -->
+  <!-- ═══════════════════════════════════════════
+       SCREEN: RESULT
+  ═══════════════════════════════════════════ -->
   <div id="screen-result" class="screen">
-    <div class="result-container">
+    <div class="screen-inner result-inner">
 
-      <!-- 顶部分数卡 -->
-      <div class="result-hero">
-        <div class="result-score-wrap">
-          <div class="result-score" id="resultScore"></div>
-          <div class="result-score-label">总分 / 120</div>
+      <!-- 1. Hero card -->
+      <div class="result-hero card" id="result-hero">
+        <div class="hero-score-wrap">
+          <div class="hero-score" id="hero-score"></div>
+          <div class="hero-score-label">综合分</div>
         </div>
-        <div class="result-title-wrap">
-          <div class="result-level-tag" id="resultLevelTag"></div>
-          <h2 class="result-level-name" id="resultLevelName"></h2>
-          <p class="result-tagline" id="resultTagline"></p>
+        <div class="hero-level-emoji" id="hero-emoji"></div>
+        <div class="hero-level-name" id="hero-name"></div>
+        <div class="hero-level-tag" id="hero-tag"></div>
+        <p class="hero-tagline" id="hero-tagline"></p>
+      </div>
+
+      <!-- 2. Radar chart -->
+      <div class="card radar-card">
+        <div class="card-title">六维能力图谱</div>
+        <canvas id="radar-canvas" width="320" height="320"></canvas>
+      </div>
+
+      <!-- 3. Dimension scores -->
+      <div class="card">
+        <div class="card-title">维度得分详情</div>
+        <div id="dim-scores"></div>
+      </div>
+
+      <!-- 4. Profile tags -->
+      <div class="card">
+        <div class="card-title">你的特质标签</div>
+        <div class="profile-tags" id="profile-tags"></div>
+      </div>
+
+      <!-- 5. Combination insights -->
+      <div class="card" id="insights-card">
+        <div class="card-title">组合诊断</div>
+        <div id="insights-list"></div>
+      </div>
+
+      <!-- 6. Action plan -->
+      <div class="card" id="action-plan-card">
+        <div class="card-title">行动方案 <span class="action-dim-label" id="action-dim-label"></span></div>
+        <div class="action-tabs">
+          <button class="action-tab active" data-period="7">7天行动</button>
+          <button class="action-tab" data-period="30">30天改变</button>
+          <button class="action-tab" data-period="12">12个月建立</button>
+        </div>
+        <div id="action-content"></div>
+      </div>
+
+      <!-- 7. Share card -->
+      <div class="card share-card">
+        <div class="card-title">分享卡片</div>
+        <div class="share-card-inner" id="share-card-inner">
+          <div class="share-title-text">你当前处在人生发展的哪个层级？</div>
+          <div class="share-level-row">
+            <span class="share-emoji" id="share-emoji"></span>
+            <div>
+              <div class="share-level-name" id="share-level-name"></div>
+              <div class="share-score-line">综合分：<strong id="share-score"></strong></div>
+            </div>
+          </div>
+          <div class="share-dims">
+            <div class="share-dim-item">
+              <span class="share-dim-label">最高维度</span>
+              <span class="share-dim-val" id="share-high"></span>
+            </div>
+            <div class="share-dim-item">
+              <span class="share-dim-label">最低维度</span>
+              <span class="share-dim-val" id="share-low"></span>
+            </div>
+          </div>
+          <p class="share-quote" id="share-quote"></p>
         </div>
       </div>
 
-      <!-- 雷达图 -->
-      <div class="result-section">
-        <h3 class="section-title">六维评分</h3>
-        <div class="radar-wrap">
-          <canvas id="radarChart" width="300" height="300"></canvas>
-        </div>
-        <div class="dim-scores" id="dimScores"></div>
+      <!-- 8. Buttons -->
+      <div class="result-buttons">
+        <button class="btn-primary" id="btn-copy-share">复制分享文案</button>
+        <button class="btn-secondary" id="btn-retry">重新测试</button>
       </div>
 
-      <!-- 详细分析 -->
-      <div class="result-section">
-        <h3 class="section-title">详细分析</h3>
-        <div class="analysis-card">
-          <div class="analysis-block">
-            <div class="analysis-label">📍 当前状态</div>
-            <p id="analysisStatus"></p>
-          </div>
-          <div class="analysis-block">
-            <div class="analysis-label">✅ 主要优势</div>
-            <p id="analysisStrength"></p>
-          </div>
-          <div class="analysis-block">
-            <div class="analysis-label">⚠️ 最大风险</div>
-            <p id="analysisRisk"></p>
-          </div>
-          <div class="analysis-block">
-            <div class="analysis-label">🚀 下一步建议</div>
-            <div id="analysisNext" class="next-steps"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 探索其他层级 -->
-      <button class="btn-explore" onclick="openLevelsDrawer()">探索其他层级的完整分析 ↓</button>
-
-      <!-- 分享卡片 -->
-      <div class="result-section" style="margin-top:16px">
-        <h3 class="section-title">分享结果</h3>
-        <div class="share-card" id="shareCard">
-          <div class="share-card-header">
-            <span class="share-badge">人生发展层级测试</span>
-          </div>
-          <div class="share-card-emoji" id="shareEmoji"></div>
-          <div class="share-card-level" id="shareLevelName"></div>
-          <div class="share-card-score" id="shareScore"></div>
-          <div class="share-card-quote" id="shareQuote"></div>
-          <div class="share-card-dims" id="shareCardDims"></div>
-          <div class="share-card-footer">你的结果是什么层？</div>
-        </div>
-        <p class="share-hint">截图保存 · 分享到朋友圈 / 小红书</p>
-      </div>
-
-      <button class="btn-restart" onclick="restartTest()">重新测试</button>
     </div>
   </div>
 
-  <!-- 层级探索抽屉 -->
-  <div id="levelsDrawerOverlay" class="drawer-overlay" onclick="handleDrawerOverlayClick(event)">
-    <div class="drawer" id="levelsDrawer">
-      <div class="drawer-handle"></div>
-      <div class="drawer-header">
-        <span class="drawer-title">六个人生发展层级</span>
-        <button class="drawer-close" onclick="closeLevelsDrawer()">✕</button>
+  <!-- ═══════════════════════════════════════════
+       LEVELS DRAWER
+  ═══════════════════════════════════════════ -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <div class="drawer" id="levels-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title">六个人生层级</span>
+      <button class="drawer-close" id="drawer-close">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="level-card-sm">
+        <div class="level-sm-top">
+          <span class="level-sm-emoji">🌱</span>
+          <div>
+            <div class="level-sm-name">基础生存层 <span class="level-sm-tag">第1层 · 0-24分</span></div>
+            <div class="level-sm-tl">先解决稳定性，再谈跃迁</div>
+          </div>
+        </div>
+        <p class="level-sm-desc">收入不稳定，储蓄极少，职业价值低，缺乏资源，被动应对生活。首要任务是建立基础安全感，而不是谈诗和远方。</p>
       </div>
-      <div class="drawer-body" id="levelsDrawerBody"></div>
+      <div class="level-card-sm">
+        <div class="level-sm-top">
+          <span class="level-sm-emoji">⚙️</span>
+          <div>
+            <div class="level-sm-name">稳定打工层 <span class="level-sm-tag">第2层 · 25-39分</span></div>
+            <div class="level-sm-tl">不要把稳定误认为安全</div>
+          </div>
+        </div>
+        <p class="level-sm-desc">有稳定收入但替代性强，生活有保障但主动权不足。稳定是假象，缺乏技能壁垒和资产积累的稳定随时会被打破。</p>
+      </div>
+      <div class="level-card-sm">
+        <div class="level-sm-top">
+          <span class="level-sm-emoji">📈</span>
+          <div>
+            <div class="level-sm-name">技能积累层 <span class="level-sm-tag">第3层 · 40-54分</span></div>
+            <div class="level-sm-tl">从努力工作切换到建立稀缺能力</div>
+          </div>
+        </div>
+        <p class="level-sm-desc">在某些方向有专业积累，开始形成一定竞争力。但还处于用时间换钱的阶段，需要把努力转化成稀缺能力和可见价值。</p>
+      </div>
+      <div class="level-card-sm">
+        <div class="level-sm-top">
+          <span class="level-sm-emoji">🔗</span>
+          <div>
+            <div class="level-sm-name">资源交换层 <span class="level-sm-tag">第4层 · 55-69分</span></div>
+            <div class="level-sm-tl">把收入变成资产，把能力变成影响力</div>
+          </div>
+        </div>
+        <p class="level-sm-desc">有清晰的职业价值和一定资源网络，开始具备资源整合能力。关键是把收入转化为资产，把个人能力转化为更大的影响力。</p>
+      </div>
+      <div class="level-card-sm">
+        <div class="level-sm-top">
+          <span class="level-sm-emoji">⚡</span>
+          <div>
+            <div class="level-sm-name">系统掌控层 <span class="level-sm-tag">第5层 · 70-84分</span></div>
+            <div class="level-sm-tl">不要停在舒适区，要扩大结构性优势</div>
+          </div>
+        </div>
+        <p class="level-sm-desc">已建立系统性优势，财务相对自由，职业有话语权，人脉质量高。此刻最大的风险是满足现状，需要继续扩大结构性护城河。</p>
+      </div>
+      <div class="level-card-sm">
+        <div class="level-sm-top">
+          <span class="level-sm-emoji">🏆</span>
+          <div>
+            <div class="level-sm-name">规则参与层 <span class="level-sm-tag">第6层 · 85-100分</span></div>
+            <div class="level-sm-tl">真正的高层级不是占有资源，而是创造更大价值</div>
+          </div>
+        </div>
+        <p class="level-sm-desc">各维度均处于高水平，具备系统性优势和结构性影响力。真正稀缺的不是资源，而是能创造规则、推动价值的格局与能力。</p>
+      </div>
     </div>
   </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
 
   <script src="script.js"></script>
 </body>
