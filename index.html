@@ -42,6 +42,7 @@
         </div>
       </div>
       <button class="btn-start" onclick="startTest()">开始测试</button>
+      <button class="btn-explore" onclick="openLevelsDrawer()">查看各层级详细介绍 ↓</button>
       <p class="welcome-note">测试结果仅供参考，没有好坏之分</p>
     </div>
   </div>
@@ -122,8 +123,11 @@
         </div>
       </div>
 
+      <!-- 探索其他层级 -->
+      <button class="btn-explore" onclick="openLevelsDrawer()">探索其他层级的完整分析 ↓</button>
+
       <!-- 分享卡片 -->
-      <div class="result-section">
+      <div class="result-section" style="margin-top:16px">
         <h3 class="section-title">分享结果</h3>
         <div class="share-card" id="shareCard">
           <div class="share-card-header">
@@ -140,6 +144,18 @@
       </div>
 
       <button class="btn-restart" onclick="restartTest()">重新测试</button>
+    </div>
+  </div>
+
+  <!-- 层级探索抽屉 -->
+  <div id="levelsDrawerOverlay" class="drawer-overlay" onclick="handleDrawerOverlayClick(event)">
+    <div class="drawer" id="levelsDrawer">
+      <div class="drawer-handle"></div>
+      <div class="drawer-header">
+        <span class="drawer-title">六个人生发展层级</span>
+        <button class="drawer-close" onclick="closeLevelsDrawer()">✕</button>
+      </div>
+      <div class="drawer-body" id="levelsDrawerBody"></div>
     </div>
   </div>
 

@@ -737,9 +737,86 @@ function drawRadarChart(canvas, normalized) {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+  // 等 DOM 重绘后再滚顶，否则 scrollTo 可能无效
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
 }
 
 function restartTest() {
   showScreen('screen-welcome');
+}
+
+// ============================================================
+// 层级探索抽屉
+// ============================================================
+const LEVEL_COLORS = ['#FF6B6B', '#FF9F43', '#FECA57', '#48DBFB', '#1DD1A1', '#A29BFE'];
+
+function openLevelsDrawer() {
+  const body = document.getElementById('levelsDrawerBody');
+  if (!body.hasChildNodes()) {
+    body.innerHTML = LEVELS.map((lv, i) => `
+      <div class="level-card" id="lcard-${i}">
+        <div class="level-card-bar" style="background:${LEVEL_COLORS[i]}"></div>
+        <div class="level-card-header" onclick="toggleLevelCard(${i})">
+          <span class="level-card-emoji">${lv.emoji}</span>
+          <div class="level-card-info">
+            <div class="level-card-tag">${lv.tag}</div>
+            <div class="level-card-name">${lv.name}</div>
+            <div class="level-card-tagline">${lv.tagline}</div>
+          </div>
+          <span class="level-card-chevron">▾</span>
+        </div>
+        <div class="level-card-body">
+          <div class="level-card-section">
+            <div class="level-card-section-label">📍 当前状态</div>
+            <p>${lv.status}</p>
+          </div>
+          <div class="level-card-section">
+            <div class="level-card-section-label">✅ 主要优势</div>
+            <p>${lv.strength}</p>
+          </div>
+          <div class="level-card-section">
+            <div class="level-card-section-label">⚠️ 最大风险</div>
+            <p>${lv.risk}</p>
+          </div>
+          <div class="level-card-section">
+            <div class="level-card-section-label">🚀 下一步建议</div>
+            ${lv.nextSteps.map((s, j) => `
+              <div class="next-step-item">
+                <span class="step-num">${j + 1}.</span><span>${s}</span>
+              </div>`).join('')}
+          </div>
+          <div class="level-card-section" style="padding-bottom:4px">
+            <div class="level-card-section-label">💬 一句话</div>
+            <p style="font-style:italic;color:var(--text)">"${lv.shareText}"</p>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const overlay = document.getElementById('levelsDrawerOverlay');
+  overlay.classList.add('open');
+  // 防止背景滚动
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLevelsDrawer() {
+  document.getElementById('levelsDrawerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleDrawerOverlayClick(e) {
+  // 点击遮罩背景（非抽屉本身）时关闭
+  if (e.target === document.getElementById('levelsDrawerOverlay')) {
+    closeLevelsDrawer();
+  }
+}
+
+function toggleLevelCard(i) {
+  const card = document.getElementById('lcard-' + i);
+  card.classList.toggle('expanded');
 }
